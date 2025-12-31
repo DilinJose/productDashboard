@@ -27,10 +27,6 @@ const Login = () => {
                     />
                 </div>
                 <ButtonWithLabel label={'Continue'} type='submit' />
-
-                {/* <button className="flex items-center justify-center font-semibold text-base text-black bg-white rounded-xl h-14 hover:bg-gray-200 transition">
-                    Continue
-                </button> */}
             </form>
         </div>
     )
