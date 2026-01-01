@@ -1,5 +1,6 @@
 'use client'
 import ButtonWithLabel from '@/app/components/ui/button/buttonWithLabel'
+import { authService } from '@/app/service/auth'
 import React, { useState } from 'react'
 
 type LoginPageProps = {
@@ -10,24 +11,36 @@ const LoginPage = ({ onPhoneSubmit }: LoginPageProps) => {
     const [phone, setPhone] = useState('')
     const [error, setError] = useState<string>('')
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setError('')
-        
+
         if (!phone.trim()) {
             setError('Please enter a phone number')
             return
         }
 
-        // Validate phone number format (basic validation)
         const phoneRegex = /^\d{10,}$/
         if (!phoneRegex.test(phone.trim())) {
             setError('Please enter a valid phone number')
             return
         }
 
-        onPhoneSubmit(phone.trim())
+        try {
+            await authService.verify(phone.trim())
+            onPhoneSubmit(phone.trim())
+
+        } catch (err: any) {
+            console.error(err)
+
+            setError(
+                err?.response?.data?.message ||
+                'Something went wrong. Try again.'
+            )
+        }
     }
+
+
 
     return (
         <div className="flex-1 bg-black flex flex-col gap-14 items-center justify-center px-6 md:px-15">
@@ -50,9 +63,9 @@ const LoginPage = ({ onPhoneSubmit }: LoginPageProps) => {
                         <p className="text-red-400 text-sm">{error}</p>
                     )}
                 </div>
-                <ButtonWithLabel 
-                    label='Continue' 
-                    type='submit' 
+                <ButtonWithLabel
+                    label='Continue'
+                    type='submit'
                 />
             </form>
         </div>

@@ -1,12 +1,9 @@
 import axios from 'axios'
 
-const BASE_URL = 'http://skilltestnextjs.evidam.zybotechlab.com'
+const BASE_URL = typeof window !== 'undefined' ? window.location.origin : ''
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 })
 
 // Request interceptor to add auth token if available

@@ -1,6 +1,7 @@
 {
   "name": "crud",
   "version": "0.1.0",
+  "proxy":"http://skilltestnextjs.evidam.zybotechlab.com/api",
   "private": true,
   "scripts": {
     "dev": "next dev",
