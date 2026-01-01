@@ -26,7 +26,7 @@ export default function RootLayout({
         className={`${inter.variable} antialiased `}
       >
         <Header />
-        <div>
+        <div className="bg-[#161616] ">
           {children}
         </div>
         <Footer />

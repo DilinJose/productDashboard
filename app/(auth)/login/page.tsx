@@ -1,7 +1,8 @@
 'use client'
 import { IMAGES } from '@/app/constants/icons'
+import { setAccessToken, setUser } from '@/app/lib/auth'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import LoginPage from './compoenents/loginPage'
 import VarifyOtp from './compoenents/varifyOtp'
@@ -11,6 +12,7 @@ type Step = 'login' | 'otp' | 'register'
 
 const Login = () => {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [step, setStep] = useState<Step>('login')
   const [phoneNumber, setPhoneNumber] = useState<string>('')
   const [isExistingUser, setIsExistingUser] = useState<boolean>(false)
@@ -20,23 +22,30 @@ const Login = () => {
     setStep('otp')
   }
 
-  const handleOtpVerified = (userExists: boolean, token?: string) => {
+  const handleOtpVerified = (userExists: boolean, token?: string, userData?: { user_id?: string; name: string; phone_number: string }) => {
     if (token) {
-      localStorage.setItem('access_token', token)
+      setAccessToken(token)
+    }
+    // Store user data if available
+    if (userData) {
+      setUser(userData)
     }
     setIsExistingUser(userExists)
     if (userExists) {
-      // Redirect to dashboard
-      router.push('/dashboard')
+      // Redirect to original destination or dashboard
+      const redirectPath = searchParams.get('redirect') || '/dashboard'
+      router.push(redirectPath)
     } else {
       setStep('register')
     }
   }
 
-  const handleRegisterComplete = (token: string) => {
-    localStorage.setItem('access_token', token)
-    // Redirect to dashboard
-    router.push('/dashboard')
+  const handleRegisterComplete = (token: string, userData: { user_id: string; name: string; phone_number: string }) => {
+    setAccessToken(token)
+    setUser(userData)
+    // Redirect to original destination or dashboard
+    const redirectPath = searchParams.get('redirect') || '/dashboard'
+    router.push(redirectPath)
   }
 
   return (

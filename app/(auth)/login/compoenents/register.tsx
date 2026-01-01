@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 
 type RegisterProps = {
     phoneNumber: string
-    onRegisterComplete: (token: string) => void
+    onRegisterComplete: (token: string, userData: { user_id: string; name: string; phone_number: string }) => void
 }
 
 const Register = ({ phoneNumber, onRegisterComplete }: RegisterProps) => {
@@ -28,7 +28,11 @@ const Register = ({ phoneNumber, onRegisterComplete }: RegisterProps) => {
                 name: name.trim(),
                 phone_number: phoneNumber,
             })
-            onRegisterComplete(response.token.access)
+            onRegisterComplete(response.token.access, {
+                user_id: response.user_id,
+                name: response.name,
+                phone_number: response.phone_number,
+            })
         } catch (err: any) {
             setError(err.response?.data?.message || 'Failed to register. Please try again.')
             console.error('Register error:', err)
@@ -51,7 +55,7 @@ const Register = ({ phoneNumber, onRegisterComplete }: RegisterProps) => {
                     <input
                         placeholder="Eg: John Mathew"
                         value={name}
-                        className="bg-[#FFFFFF1A] placeholder:text-white/30 rounded-xl h-14 px-4 outline-none focus:ring-2 focus:ring-white/40"
+                        className="bg-[#FFFFFF1A] placeholder:text-white/30 text-white rounded-xl h-14 px-4 outline-none focus:ring-2 focus:ring-white/40"
                         onChange={(e) => setName(e.target.value)}
                         disabled={loading}
                     />

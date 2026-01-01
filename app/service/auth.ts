@@ -6,6 +6,9 @@ export interface VerifyResponse {
     access: string
   }
   user: boolean
+  user_id?: string
+  name?: string
+  phone_number?: string
 }
 
 export interface LoginRegisterRequest {
@@ -42,4 +45,5 @@ export const authService = {
     return response.data
   },
 }
+
 

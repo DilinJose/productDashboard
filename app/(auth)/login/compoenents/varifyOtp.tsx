@@ -8,7 +8,7 @@ const OTP_LENGTH = 4
 
 type VarifyOtpProps = {
     phoneNumber: string
-    onOtpVerified: (userExists: boolean, token?: string) => void
+    onOtpVerified: (userExists: boolean, token?: string, userData?: { user_id?: string; name: string; phone_number: string }) => void
 }
 
 const VarifyOtp = ({ phoneNumber, onOtpVerified }: VarifyOtpProps) => {
@@ -16,6 +16,7 @@ const VarifyOtp = ({ phoneNumber, onOtpVerified }: VarifyOtpProps) => {
     const [expectedOtp, setExpectedOtp] = useState<string>('')
     const [isExistingUser, setIsExistingUser] = useState<boolean>(false)
     const [token, setToken] = useState<string | undefined>(undefined)
+    const [userData, setUserData] = useState<{ user_id?: string; name: string; phone_number: string } | undefined>(undefined)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string>('')
     const [resendTimer, setResendTimer] = useState(0)
@@ -30,6 +31,14 @@ const VarifyOtp = ({ phoneNumber, onOtpVerified }: VarifyOtpProps) => {
                 setIsExistingUser(response.user)
                 if (response.token?.access) {
                     setToken(response.token.access)
+                }
+                // Store user data if available (for existing users)
+                if (response.user && response.name && response.phone_number) {
+                    setUserData({
+                        user_id: response.user_id,
+                        name: response.name,
+                        phone_number: response.phone_number,
+                    })
                 }
                 // Start resend timer (60 seconds)
                 setResendTimer(60)
@@ -61,6 +70,14 @@ const VarifyOtp = ({ phoneNumber, onOtpVerified }: VarifyOtpProps) => {
             setIsExistingUser(response.user)
             if (response.token?.access) {
                 setToken(response.token.access)
+            }
+            // Store user data if available (for existing users)
+            if (response.user && response.name && response.phone_number) {
+                setUserData({
+                    user_id: response.user_id,
+                    name: response.name,
+                    phone_number: response.phone_number,
+                })
             }
             inputsRef.current[0]?.focus()
         } catch (err) {
@@ -118,7 +135,13 @@ const VarifyOtp = ({ phoneNumber, onOtpVerified }: VarifyOtpProps) => {
         }
 
         if (otpValue === expectedOtp) {
-            onOtpVerified(isExistingUser, token)
+            // For existing users, pass user data if available, otherwise use phone number as name
+            const userDataToPass = isExistingUser && userData 
+                ? userData 
+                : isExistingUser 
+                    ? { name: phoneNumber, phone_number: phoneNumber }
+                    : undefined
+            onOtpVerified(isExistingUser, token, userDataToPass)
         } else {
             setError('Invalid OTP. Please try again.')
         }

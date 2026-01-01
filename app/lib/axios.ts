@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getAccessToken } from './auth'
 
 const BASE_URL = typeof window !== 'undefined' ? window.location.origin : ''
 
@@ -9,7 +10,7 @@ export const apiClient = axios.create({
 // Request interceptor to add auth token if available
 apiClient.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('access_token')
+    const token = getAccessToken()
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
