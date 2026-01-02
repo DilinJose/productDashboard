@@ -1,6 +1,7 @@
 'use client'
 import ButtonWithLabel from '@/app/components/ui/button/buttonWithLabel'
-import { authService } from '@/app/service/auth'
+import apiClient from '@/app/lib/axios'
+import { authService, VerifyResponse } from '@/app/service/auth'
 import React, { useState } from 'react'
 
 type LoginPageProps = {
