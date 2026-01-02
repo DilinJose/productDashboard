@@ -3,7 +3,7 @@ import { IMAGES } from '@/app/constants/icons'
 import { setAccessToken } from '@/app/lib/auth'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import LoginPage from './compoenents/loginPage'
 import VarifyOtp from './compoenents/varifyOtp'
 import Register from './compoenents/register'
@@ -12,7 +12,7 @@ import { useUserStore } from '@/app/store/userStore'
 
 type Step = 'login' | 'otp' | 'register'
 
-const Login = () => {
+const LoginContent = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [step, setStep] = useState<Step>('login')
@@ -78,6 +78,18 @@ const Login = () => {
         )}
       </div>
     </div>
+  )
+}
+
+const Login = () => {
+  return (
+    <Suspense fallback={
+      <div className="h-screen w-full flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   )
 }
 

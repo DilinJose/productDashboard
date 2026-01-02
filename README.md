@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+##  Prerequisites
 
-## Getting Started
+- Node.js 18.x or higher
+- npm, yarn
 
-First, run the development server:
+## Setup Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone <repository-url>
+cd crud
+```
+
+### 2. Install Dependencies
+
+Using npm:
+```bash
+npm install
+```
+
+Using yarn:
+```bash
+yarn install
+```
+
+### 3. Run Development Server
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 4. Open the Application
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+crud/
+├── app/
+│   ├── (auth)/              # Authentication routes
+│   │   └── login/           # Login/Register/OTP pages
+│   ├── (protected)/         # Protected routes
+│   │   ├── dashboard/       # Product catalog
+│   │   ├── order-list/      # User orders
+│   │   └── order-success/   # Order confirmation
+│   ├── api/                 # Next.js API routes (proxies)
+│   │   ├── verify/          # OTP verification
+│   │   ├── login-register/  # User registration
+│   │   ├── new-products/    # Product listing
+│   │   ├── purchase-product/# Purchase endpoint
+│   │   └── user-orders/     # User orders API
+│   ├── components/          # Reusable components
+│   ├── lib/                 # Utility libraries
+│   │   ├── auth.ts          # Authentication helpers
+│   │   └── axios.ts         # API client configuration
+│   ├── service/             # API service layer
+│   ├── store/               # Zustand stores
+│   └── types/               # TypeScript types
+├── middleware.ts            # Route protection middleware
+├── next.config.ts           # Next.js configuration
+└── package.json
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tech Decisions
 
-## Deploy on Vercel
+### Framework & Runtime
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Next.js 16.1.1 (App Router)**
+- **Reason**: Modern React framework with built-in routing, API routes, and server-side capabilities
+- **Benefits**: File-based routing, server components, optimized performance, seamless deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**React 19.2.3**
+- **Reason**: Latest React version with improved performance and developer experience
+- **Benefits**: Concurrent features, better hydration, improved hooks
+
+**TypeScript 5**
+- **Reason**: Type safety and improved developer experience
+- **Benefits**: Catch errors at compile time, better IDE support, self-documenting code
+
+### Styling
+
+**Tailwind CSS 4**
+- **Reason**: Utility-first CSS framework for rapid UI development
+- **Benefits**: Consistent design system, small bundle size, responsive design utilities
+
+### State Management
+
+**Zustand 5.0.9**
+- **Reason**: Lightweight, simple state management solution
+- **Benefits**: Minimal boilerplate, TypeScript support, persist middleware for localStorage
+- **Usage**: User store and order store for client-side state
+
+### HTTP Client
+
+**Axios 1.13.2**
+- **Reason**: Popular HTTP client with interceptors and better error handling
+- **Benefits**: Request/response interceptors for token injection, automatic JSON parsing
+- **Configuration**: Base URL configured, Authorization header automatically added via interceptor
+
+### Animation
+
+**GSAP 3.14.2 + @gsap/react**
+- **Reason**: Powerful animation library for smooth UI interactions
+- **Benefits**: High performance, cross-browser compatibility, React integration
