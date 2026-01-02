@@ -16,8 +16,7 @@ export default function OrderSuccessPage() {
     }
 
     return (
-        // <div className="min-h-screen  py-12 px-4 bg-[#161616]">
-        //     <div className="h-full flex flex-col items-center justify-center gap-[36px]">
+    
         <div className="min-h-screen bg-[#161616] flex items-center justify-center px-4">
             <div className="flex flex-col items-center gap-[36px]">
 
@@ -32,7 +31,7 @@ export default function OrderSuccessPage() {
                         <Image className='rounded-xl' width={110} height={95} src={orderData.productImage} alt='product image' />
                         <div className='flex flex-col gap-4'>
                             <span className='text-white font-medium text-[20px]'>{orderData.productName}</span>
-                            <span className='font-semibold text-[15px] text-[#FFFFFF99]'>UK {orderData.productSize}</span>
+                            <span className='font-semibold text-[15px] text-[#FFFFFF99]'>UK {orderData.productSize},{orderData.order.id}</span>
                         </div>
                     </div>
                     <div className="flex items-center justify-center gap-2">
