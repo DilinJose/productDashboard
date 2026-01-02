@@ -22,11 +22,11 @@ export default async function Page() {
       ) : (
         <ul className="flex flex-col gap-[24px]">
           {orders.map((order, i) => (
-            <div key={i} className='w-[800px] p-4 flex items-center justify-between rounded-xl bg-[#FFFFFF14]'>
-              <div className=' flex items-center gap-7'>
+            <div key={i} className='md:w-[800px] w-auto  p-4 flex flex-col md:flex-row items-center justify-between rounded-xl bg-[#FFFFFF14]'>
+              <div className=' flex items-center flex-col md:flex-row gap-7'>
                 <Image width={110} height={95} src={IMAGES.shoeSmallImage} alt='product image' />
                 <div className='flex flex-col gap-4'>
-                  <div className='flex flex-col gap-2'>
+                  <div className='flex flex-col md:items-start items-center gap-2'>
                     <span className='text-white font-medium text-[20px]'>{order.product_name}</span>
                     <span className='font-semibold text-[15px] text-[#FFFFFF99]'>UK {order.quantity},{order.order_id}</span>
                   </div>

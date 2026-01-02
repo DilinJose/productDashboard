@@ -1,7 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'skilltestnextjs.evidam.zybotechlab.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'skilltestnextjs.evidam.zybotechlab.com',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

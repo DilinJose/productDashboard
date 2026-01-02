@@ -28,6 +28,7 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/dashboard/:path*",
+    "/order-list/:path*",
     // Add other protected routes here
     // "/profile/:path*",
     // "/settings/:path*",

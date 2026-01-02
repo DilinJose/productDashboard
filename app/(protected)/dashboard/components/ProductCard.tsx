@@ -76,88 +76,112 @@ export default function ProductCard({ product }: ProductCardProps) {
     const hoverContentRef = useRef<HTMLDivElement>(null)
     const tl = useRef<gsap.core.Timeline | null>(null)
 
+    const calculateShifts = () => {
+        if (!containerRef.current) return { imageShift: -55, panelShift: -180 };
+
+        const containerHeight = containerRef.current.offsetHeight;
+        
+        const IMAGE_SHIFT_PERCENT = 0.0275;
+        const imageShift = Math.max(-95, Math.min(-90, -(containerHeight * IMAGE_SHIFT_PERCENT)));
+        
+        const PANEL_SHIFT_PERCENT = 0.09;
+        const panelShift = Math.max(-175, Math.min(-175, -(containerHeight * PANEL_SHIFT_PERCENT)));
+
+        return { imageShift, panelShift };
+    }
+
     useGSAP(
         () => {
-            if (!imageRef.current || !hoverContentRef.current) return
+            if (!imageRef.current || !hoverContentRef.current || !containerRef.current) return;
 
-            const sizeDiv = hoverContentRef.current.querySelector('.size-section')
-            const colorDiv = hoverContentRef.current.querySelector('.color-section')
-            const buttonDiv = hoverContentRef.current.querySelector('.button-section')
+            const { imageShift, panelShift } = calculateShifts();
 
-
-            gsap.set(imageRef.current, {
-                y: 0,
-            })
-
-            gsap.set(hoverContentRef.current, {
-                opacity: 1,
-                y: 40, // start from bottom
-                pointerEvents: 'none',
-            })
-
-            gsap.set([sizeDiv, colorDiv, buttonDiv], {
-                opacity: 0,
-                y: 20,
-            })
-
-            tl.current = gsap.timeline({ paused: true })
+            tl.current = gsap.timeline({ paused: true });
 
             tl.current
-                .to(
-                    imageRef.current,
-                    {
-                        y: -80,
-                        duration: 0.5,
-                        ease: 'power2.out',
-                        pointerEvents: 'auto',
-                    },
-                    0
-                )
+                .to(imageRef.current, {
+                    y: imageShift,
+                    duration: 0.6,
+                    ease: 'power3.out',
+                }, 0)
                 .to(
                     hoverContentRef.current,
                     {
-                        opacity: 1,
-                        y: -200,
-                        duration: 0.5,
-                        ease: 'power2.out',
-                        pointerEvents: 'auto',
+                        y: panelShift,
+                        duration: 0.6,
+                        ease: 'power3.out',
                     },
                     0
                 )
 
-                .to(
-                    sizeDiv,
+                .fromTo(
+                    '.size-section, .color-section, .button-section',
+                    { opacity: 0, y: 25 },
                     {
                         opacity: 1,
                         y: 0,
-                        duration: 0.3,
+                        duration: 0.4,
                         ease: 'power2.out',
+                        stagger: 0.1,
                     },
                     0.2
-                )
-                .to(
-                    colorDiv,
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.3,
-                        ease: 'power2.out',
-                    },
-                    0.35
-                )
-                .to(
-                    buttonDiv,
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.3,
-                        ease: 'power2.out',
-                    },
-                    0.5
-                )
+                );
         },
         { scope: containerRef }
-    )
+    );
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (!tl.current || !imageRef.current || !hoverContentRef.current || !containerRef.current) return;
+            
+            const { imageShift, panelShift } = calculateShifts();
+            
+            tl.current.kill();
+            gsap.set(imageRef.current, { y: 0 });
+            gsap.set(hoverContentRef.current, { y: 0 });
+                        tl.current = gsap.timeline({ paused: true });
+            tl.current
+                .to(imageRef.current, {
+                    y: imageShift,
+                    duration: 0.6,
+                    ease: 'power3.out',
+                }, 0)
+                .to(
+                    hoverContentRef.current,
+                    {
+                        y: panelShift,
+                        duration: 0.6,
+                        ease: 'power3.out',
+                    },
+                    0
+                )
+                .fromTo(
+                    containerRef.current.querySelectorAll('.size-section, .color-section, .button-section'),
+                    { opacity: 0, y: 25 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.4,
+                        ease: 'power2.out',
+                        stagger: 0.1,
+                    },
+                    0.2
+                );
+        };
+
+        let resizeTimer: NodeJS.Timeout;
+        const debouncedResize = () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(handleResize, 150);
+        };
+
+        window.addEventListener('resize', debouncedResize);
+        return () => {
+            window.removeEventListener('resize', debouncedResize);
+            clearTimeout(resizeTimer);
+        };
+    }, []);
+
 
     const handleColorSelect = (color: NonNullable<typeof selectedColor>) => {
         setSelectedColor(color)
