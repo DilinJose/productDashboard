@@ -14,11 +14,11 @@ export default async function Page() {
   const orders = await ordersService.listOrders(token, baseURL)
 
   return (
-    <div className="p-[60px]">
+    <div className="p-[60px] min-h-screen">
       <h1 className="font-semibold text-[40px] text-white mb-[48px]">My Orders</h1>
 
       {orders.length === 0 ? (
-        <p>No orders found</p>
+        <p className="text-white font-medium text-[20px]">No orders found</p>
       ) : (
         <ul className="flex flex-col gap-[24px]">
           {orders.map((order, i) => (

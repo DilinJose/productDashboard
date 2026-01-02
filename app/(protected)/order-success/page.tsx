@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useOrderStore } from '@/app/store/orderedProductStore'
 import logo from '../../../public/images/footerLogo.png'
+import { IMAGES } from '@/app/constants/icons';
 
 export default function OrderSuccessPage() {
     const { orderSuccessData: orderData } = useOrderStore();
@@ -28,7 +29,8 @@ export default function OrderSuccessPage() {
 
                 <div className='w-125 p-4 flex items-center justify-between rounded-xl bg-[#FFFFFF14]'>
                     <div className=' flex items-center gap-7'>
-                        <Image className='rounded-xl' width={110} height={95} src={orderData.productImage} alt='product image' />
+                                                <Image className='rounded-xl' width={110} height={95} src={IMAGES.shoeSmallImage} alt='product image' />
+
                         <div className='flex flex-col gap-4'>
                             <span className='text-white font-medium text-[20px]'>{orderData.productName}</span>
                             <span className='font-semibold text-[15px] text-[#FFFFFF99]'>UK {orderData.productSize},{orderData.order.id}</span>

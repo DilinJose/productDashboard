@@ -21,7 +21,7 @@ const Header = () => {
     return (
         <div className="px-15 mx-auto bg-[#191919] h-17.5 ">
             <div className='px-2.25 flex justify-between items-center h-full w-full'>
-                <div >
+                <div className='cursor-pointer' onClick={()=>router.push('/dashboard')}>
                     <Image width={54.17} height={28.54} src={logo} alt='Logo' />
                 </div>
                 <div className='flex items-center gap-4'>

@@ -47,7 +47,7 @@ export default function Dashboard() {
     return (
         <div className="min-h-screen p-15">
             <div className="w-full">
-                <h1 className="text-3xl font-bold text-white mb-8">New Products</h1>
+                <h1 className="text-[40px] font-semibold text-white mb-8">Men’s Jordan Shoes</h1>
                 
                 {products.length === 0 ? (
                     <div className="text-white text-center py-12">
