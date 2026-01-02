@@ -1,3 +1,9 @@
+## Deployed link
+
+```
+https://product-dashboard-neon.vercel.app/
+```
+
 ##  Prerequisites
 
 - Node.js 18.x or higher
