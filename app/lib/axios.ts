@@ -7,7 +7,7 @@ export const apiClient = axios.create({
   baseURL: BASE_URL,
 })
 
-// Request interceptor to add auth token if available
+
 apiClient.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
     const token = getAccessToken()
