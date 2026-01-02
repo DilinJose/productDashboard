@@ -1,0 +1,1 @@
+export interface UserDataTypes { user_id?: string; name: string; phone_number: string }

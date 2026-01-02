@@ -8,13 +8,15 @@ import redShoe from '../assets/images/red_shoe.png'
 import violetShoe from '../assets/images/violet_shoe.png'
 import pinkShoe from '../assets/images/pink_shoe.png'
 import nikeText from '../assets/images/Nike_Text.png'
-
+import shoeSmallImage from '../assets/images/shoeSmallImage.png'
+import { FaRegUserCircle } from "react-icons/fa";
 
 export const ICONS = {
     facebook: FaFacebookF,
     instagram: PiInstagramLogoFill,
     twitter: FaXTwitter,
-    Edit: MdOutlineEdit
+    Edit: MdOutlineEdit,
+    user:FaRegUserCircle
 }
 
 
@@ -25,5 +27,6 @@ export const IMAGES = {
     redShoe,
     violetShoe,
     pinkShoe,
-    nikeText
+    nikeText,
+    shoeSmallImage
 }

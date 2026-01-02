@@ -1,24 +1,20 @@
 'use client'
-import { getUser, removeAccessToken } from '@/app/lib/auth'
+import {  removeAccessToken } from '@/app/lib/auth'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import logo from '../../../public/images/logo.png'
 import Image from 'next/image'
+import { useUserStore } from '@/app/store/userStore'
+import { ICONS } from '@/app/constants/icons'
 
 const Header = () => {
-    const [userName, setUserName] = useState<string>('')
     const router = useRouter()
 
-    useEffect(() => {
-        // Get user details from storage
-        const user = getUser()
-        if (user) {
-            setUserName(user.name)
-        }
-    }, [])
+    const { user,clearUser } = useUserStore()
 
     const handleLogout = () => {
         removeAccessToken()
+        clearUser()
         router.push('/login')
     }
 
@@ -29,23 +25,19 @@ const Header = () => {
                     <Image width={54.17} height={28.54} src={logo} alt='Logo' />
                 </div>
                 <div className='flex items-center gap-4'>
-                    {userName ? (
+                    {user && (
                         <>
-                            <span className='text-white text-sm md:text-base'>
-                                {userName}
+                            <span className='text-white text-sm md:text-base cursor-pointer' onClick={() => { router.push("/order-list") }}>
+                               <ICONS.user size={20} color='#ffffff'/>
                             </span>
-                            <button 
+                            <button
                                 onClick={handleLogout}
-                                className='text-white text-sm md:text-base hover:text-gray-300 transition-colors'
+                                className='text-white text-sm md:text-base font-medium hover:text-gray-300 transition-colors'
                             >
-                                Logout
+                                Log Out
                             </button>
                         </>
-                    ) : (
-                        <span className='text-white text-sm md:text-base'>
-                            LogIn
-                        </span>
-                    )}
+                    ) }
                 </div>
             </div>
         </div>
