@@ -14,16 +14,10 @@ https://product-dashboard-neon.vercel.app/
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
-cd crud
+git clone https://github.com/DilinJose/productDashboard.git
 ```
 
 ### 2. Install Dependencies
-
-Using npm:
-```bash
-npm install
-```
 
 Using yarn:
 ```bash
@@ -33,8 +27,6 @@ yarn install
 ### 3. Run Development Server
 
 ```bash
-npm run dev
-# or
 yarn dev
 ```
 
