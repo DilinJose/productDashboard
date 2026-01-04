@@ -28,7 +28,6 @@ const LoginPage = ({ onPhoneSubmit }: LoginPageProps) => {
         }
 
         try {
-            await authService.verify(phone.trim())
             onPhoneSubmit(phone.trim())
 
         } catch (err: any) {

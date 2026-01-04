@@ -12,6 +12,7 @@ type VarifyOtpProps = {
 }
 
 const VarifyOtp = ({ phoneNumber, onOtpVerified }: VarifyOtpProps) => {
+    const hasFetchedOtp = useRef(false)
     const [otp, setOtp] = useState<string[]>(Array(OTP_LENGTH).fill(''))
     const [expectedOtp, setExpectedOtp] = useState<string>('')
     const [isExistingUser, setIsExistingUser] = useState<boolean>(false)
@@ -23,32 +24,32 @@ const VarifyOtp = ({ phoneNumber, onOtpVerified }: VarifyOtpProps) => {
     const inputsRef = useRef<(HTMLInputElement | null)[]>([])
 
     useEffect(() => {
-        // Call verify API to get OTP when component mounts
-        const fetchOtp = async () => {
-            try {
-                const response = await authService.verify(phoneNumber)
-                setExpectedOtp(response.otp)
-                setIsExistingUser(response.user)
-                if (response.token?.access) {
-                    setToken(response.token.access)
-                }
-                // Store user data if available (for existing users)
-                if (response.user && response.name && response.phone_number) {
-                    setUserData({
-                        user_id: response.user_id,
-                        name: response.name,
-                        phone_number: response.phone_number,
-                    })
-                }
-                // Start resend timer (60 seconds)
-                setResendTimer(60)
-            } catch (err) {
-                setError('Failed to get OTP. Please try again.')
-                console.error('Verify error:', err)
+    if (hasFetchedOtp.current) return
+    hasFetchedOtp.current = true
+
+    const fetchOtp = async () => {
+        try {
+            const response = await authService.verify(phoneNumber)
+            setExpectedOtp(response.otp)
+            setIsExistingUser(response.user)
+            if (response.token?.access) {
+                setToken(response.token.access)
             }
+            if (response.user && response.name && response.phone_number) {
+                setUserData({
+                    user_id: response.user_id,
+                    name: response.name,
+                    phone_number: response.phone_number,
+                })
+            }
+            setResendTimer(60)
+        } catch (err) {
+            setError('Failed to get OTP. Please try again.')
+            console.error('Verify error:', err)
         }
-        fetchOtp()
-    }, [phoneNumber])
+    }
+    fetchOtp()
+}, [phoneNumber])
 
     useEffect(() => {
         // Countdown timer for resend
